@@ -15,7 +15,7 @@ class AddDevicePage {
                 .click(this.typeSelect)
                 .click(this.typeOption.withText(data.type))
                 .expect(this.typeSelect.value).eql(data.type)
-                .typeText(this.hddCapacityInput, data.capacity)
+                .typeText(this.hddCapacityInput, data.hdd_capacity)
                 .click(this.saveButton)
 
         }
