@@ -18,6 +18,7 @@ jobs:
         run: |
           git clone https://github.com/Yastrenky/devices-clientapp
           cd devices-clientapp
+          npx update-browserslist-db@latest
           npm install
           npm start &
 
