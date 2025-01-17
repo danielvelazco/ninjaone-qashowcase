@@ -1,0 +1,14 @@
+{
+  "name": "ninjaone-qashowcase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx testcafe"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "testcafe": "^3.7.1"
+  }
+}
