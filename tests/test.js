@@ -1,6 +1,7 @@
 import mainPage from '../page-model/MainPage';
 import addDevicePage from '../page-model/AddDevicePage';
 import utils from '../utils'
+import { newUser, constant } from '../testData';
 
 fixture `Devices Management`
 
@@ -33,27 +34,20 @@ test('Devices Visibility', async t => {
 });
 
 test('Add a new device', async t => {
-    // data for the new device
-    const data = {
-        systemName: "daniel",
-        type: "MAC",
-        hdd_capacity: "5"
-    }
-
     // add new device
-    await addDevicePage.new(t, data)
+    await addDevicePage.new(t, newUser)
     
     // Get the new device info from the app
-    const newDeviceAdded = await mainPage.getDeviceBySystemName(data.systemName)
+    const newDeviceAdded = await mainPage.getDeviceBySystemName(newUser.systemName)
 
     // Assert new device info is properly displayed
     await t
         .expect(newDeviceAdded.found).eql(true)
-        .expect(newDeviceAdded.systemName.value).eql(data.systemName)
+        .expect(newDeviceAdded.systemName.value).eql(newUser.systemName)
         .expect(newDeviceAdded.systemName.isVisible).ok()
-        .expect(newDeviceAdded.type.value).eql(data.type)
+        .expect(newDeviceAdded.type.value).eql(newUser.type)
         .expect(newDeviceAdded.type.isVisible).ok()
-        .expect(newDeviceAdded.hdd_capacity.value).eql(`${data.hdd_capacity} GB`)
+        .expect(newDeviceAdded.hdd_capacity.value.replace(" GB","")).eql(newUser.hdd_capacity)
         .expect(newDeviceAdded.hdd_capacity.isVisible).ok()
 });
 
@@ -64,7 +58,7 @@ test('Rename the first device in the list', async t => {
     // Get the current system_name on the first device
     // Update the system_name on the first device to "Renamed Device"
     let firstDevice = devicesListFromServer[0];
-    firstDevice.system_name = "Renamed Device";
+    firstDevice.system_name = constant.NEW_SYSTEM_NAME;
 
     // API call to update the system_name to the firts device in the db
     await utils.updateDevice(t, firstDevice);
