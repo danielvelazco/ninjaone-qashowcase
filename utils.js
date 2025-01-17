@@ -2,11 +2,11 @@ import page from './page-model/MainPage'
 const apiBaseUrl = `http://localhost:3000`
 
 const utils = {
-    async get_devices_list_from_server(t) {
+    async getDevicesListFromServer(t) {
         return await t.request(`${apiBaseUrl}/devices/`).body
     },
 
-    async rename_system_name_device(t, data) {
+    async updateDevice(t, data) {
         return await t.request(
             {
                 url: `${apiBaseUrl}/devices/${data.id}`,
@@ -20,7 +20,7 @@ const utils = {
         )
     },
 
-    async delete_device(t, data) {
+    async deleteDevice(t, data) {
         return await t.request(
             {
                 url: `${apiBaseUrl}/devices/${data.id}`,
@@ -29,19 +29,19 @@ const utils = {
         )
     },
     
-    sort_devices_list_by_hdd_capacity_ASC(devicesList) {
+    sortDevicesListByHddCapacityASC(devicesList) {
         const sortedByCapacityASC = devicesList.sort((a, b) => {
             return parseInt(a.hdd_capacity) - parseInt(b.hdd_capacity);
         });
         return sortedByCapacityASC;
     },
     
-    remove_id_property_from_devices(devicesList) {
+    removeIdPropertyFromDevices(devicesList) {
         const devicesWithoutId = devicesList.map(({ id, ...rest }) => rest);
         return devicesWithoutId;
     },
     
-    async get_devices_list_from_web_app(devicesSelector) {
+    async getDevicesListFromWebApp(devicesSelector) {
         const devicesListFromWebApp = []
         
         for (let index = 0; index < await devicesSelector.count; index++) {

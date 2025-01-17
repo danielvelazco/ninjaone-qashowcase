@@ -7,11 +7,11 @@ fixture `Devices Management`
 // Tests
 test('Devices Visibility', async t => {
     // Make an API call to retrieve the list of devices. 
-    const devicesListFromServer = await utils.get_devices_list_from_server(t);
+    const devicesListFromServer = await utils.getDevicesListFromServer(t);
     
     // Sort the API response by the hdd_capacity property in ASC order because it's what the app is doing after receiving the response
     // With the sorted list we can verify if the web app is sorting the devices list in the proper way
-    const devices_list_sorted_by_capacity_ASC = utils.sort_devices_list_by_hdd_capacity_ASC(devicesListFromServer);
+    const devicesListSortedByCapacityASC = utils.sortDevicesListByHddCapacityASC(devicesListFromServer);
     
     // Get devices list from the web app
     /* 
@@ -23,15 +23,15 @@ test('Devices Visibility', async t => {
             "hdd_capacity": string without "GB"
         }
     */   
-    const devicesListFromWebApp = await utils.get_devices_list_from_web_app(mainPage.listOfDevices)
+    const devicesListFromWebApp = await utils.getDevicesListFromWebApp(mainPage.listOfDevices)
     
     // Check the name, type and capacity of each element of the list using the class names and make sure they are correctly displayed.
     // Since each device is in the same index in both arrays we can say the devices are correctly displayed.
-    for (let i = 0; i < devices_list_sorted_by_capacity_ASC.length; i++) {
+    for (let i = 0; i < devicesListSortedByCapacityASC.length; i++) {
         await t
-            .expect(devices_list_sorted_by_capacity_ASC[i].system_name).eql(devicesListFromWebApp[i].system_name)
-            .expect(devices_list_sorted_by_capacity_ASC[i].type).eql(devicesListFromWebApp[i].type)
-            .expect(devices_list_sorted_by_capacity_ASC[i].hdd_capacity).eql(devicesListFromWebApp[i].hdd_capacity)
+            .expect(devicesListSortedByCapacityASC[i].system_name).eql(devicesListFromWebApp[i].system_name)
+            .expect(devicesListSortedByCapacityASC[i].type).eql(devicesListFromWebApp[i].type)
+            .expect(devicesListSortedByCapacityASC[i].hdd_capacity).eql(devicesListFromWebApp[i].hdd_capacity)
         
         // Verify that all devices contain the edit and remove buttons.    
         // EDIT button
@@ -50,7 +50,7 @@ test('Devices Visibility', async t => {
     }
 
     // Another way to verify the device info is by removing the ID from the sorted list and compare both arrays
-    const devicesWithoutId = utils.remove_id_property_from_devices(devices_list_sorted_by_capacity_ASC)
+    const devicesWithoutId = utils.removeIdPropertyFromDevices(devicesListSortedByCapacityASC)
     await t.expect(devicesWithoutId).eql(devicesListFromWebApp);
 });
 
@@ -81,7 +81,7 @@ test('Add a new device', async t => {
 
 test('Rename the first device in the list', async t => {
     // API call to get the device list
-    let devicesListFromServer = await utils.get_devices_list_from_server(t);
+    let devicesListFromServer = await utils.getDevicesListFromServer(t);
     
     // Get the current system_name on the first device
     let firstDevice = devicesListFromServer[0];
@@ -91,7 +91,7 @@ test('Rename the first device in the list', async t => {
     firstDevice.system_name = "Renamed Device";
 
     // API call to update the system_name to the firts device in the db
-    await utils.rename_system_name_device(t, firstDevice);
+    await utils.updateDevice(t, firstDevice);
 
     // reload page
     await t.eval(() => location.reload(true));
@@ -113,14 +113,13 @@ test('Rename the first device in the list', async t => {
 
 test('Delete the last device in the list', async t => {
     // API call to get the device list
-    let devicesListFromServer = await utils.get_devices_list_from_server(t);
+    let devicesListFromServer = await utils.getDevicesListFromServer(t);
     
     // Get the last device from the list
     let lastDevice = devicesListFromServer[devicesListFromServer.length - 1];
-    console.log(lastDevice)
     
     // API call to delete the last device in the list
-    await utils.delete_device(t, lastDevice);
+    await utils.deleteDevice(t, lastDevice);
 
     // reload page
     await t.eval(() => location.reload(true));
@@ -131,5 +130,3 @@ test('Delete the last device in the list', async t => {
     await t
         .expect(device.found).eql(false)
 });
-
-
