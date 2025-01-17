@@ -87,8 +87,8 @@ test('Delete the last device returned when retrieving the devices list', async t
     // reload page
     await t.eval(() => location.reload(true));
 
-    // Search the device using the old system_name
-    // It should't find any device with the old name
+    // Search the device using the device's system_name
+    // It should't find any device with that name
     let device = await mainPage.getDeviceBySystemName(lastDevice.system_name)
     await t
         .expect(device.found).eql(false)
