@@ -6,7 +6,7 @@ import { newUser, constant } from '../testData';
 fixture `Devices Management`
 
 // Tests
-test('Devices Visibility', async t => {
+test('Check if the web app displays the device info and options properly', async t => {
     // Make an API call to retrieve the list of devices. 
     const devicesListFromServer = await utils.getDevicesListFromServer(t);
 
@@ -35,7 +35,7 @@ test('Devices Visibility', async t => {
 
 test('Add a new device', async t => {
     // add new device
-    await addDevicePage.new(t, newUser)
+    await addDevicePage.newDevice(t, newUser)
     
     // Get the new device info from the app
     const newDeviceAdded = await mainPage.getDeviceBySystemName(newUser.systemName)
@@ -51,7 +51,7 @@ test('Add a new device', async t => {
         .expect(newDeviceAdded.hdd_capacity.isVisible).ok()
 });
 
-test('Rename the first device in the list', async t => {
+test('Rename the first device returned when retrieving the devices list', async t => {
     // API call to get the device list
     let devicesListFromServer = await utils.getDevicesListFromServer(t);
     
@@ -74,7 +74,7 @@ test('Rename the first device in the list', async t => {
         .expect(device.systemName.value).eql(firstDevice.system_name)
 });
 
-test('Delete the last device in the list', async t => {
+test('Delete the last device returned when retrieving the devices list', async t => {
     // API call to get the device list
     let devicesListFromServer = await utils.getDevicesListFromServer(t);
     

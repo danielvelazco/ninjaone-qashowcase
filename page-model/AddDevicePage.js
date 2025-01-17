@@ -8,17 +8,17 @@ class AddDevicePage {
         this.typeOption = this.typeSelect.find("option")
         this.hddCapacityInput = Selector("#hdd_capacity")
         this.saveButton = Selector("button[class='submitButton']")
-        this.new = async (t, data) => {
-            await t
-                .click(mainPage.addDeviceButton)
-                .typeText(this.sysmeNameInput, data.systemName)
-                .click(this.typeSelect)
-                .click(this.typeOption.withText(data.type))
-                .expect(this.typeSelect.value).eql(data.type)
-                .typeText(this.hddCapacityInput, data.hdd_capacity)
-                .click(this.saveButton)
+    }
 
-        }
+    newDevice = async (t, newUserData) => {
+        await t
+            .click(mainPage.addDeviceButton)
+            .typeText(this.sysmeNameInput, newUserData.systemName)
+            .click(this.typeSelect)
+            .click(this.typeOption.withText(newUserData.type))
+            .expect(this.typeSelect.value).eql(newUserData.type)
+            .typeText(this.hddCapacityInput, newUserData.hdd_capacity)
+            .click(this.saveButton)
     }
 }
 
